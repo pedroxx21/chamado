@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-<div class=" p-5 bg-light border">
-    <h1>Cadastro de novo Usuário</h1>
+<div class=" p-5 bg-light border ">
+    <h1>Cadastro de novo usuário</h1>
     <p>Para acessar o sistema preencha os campos abaixo</p>
 
     <form method="post" action="{{ url_for('consumidorInsert')}}">
         <label for="for">Nome:</label>
             <input type="text" name="nomeDoConsumidor" class="form-control">
-        <label for="for">Email</label>
+        <label for="for">Email:</label>
             <input type="email" name="email" class="form-control">
-        <label for="for">Celular</label>
+        <label for="for">Celular:</label>
             <input type="text" name="celular" class="form-control">
-        <label for="for">Senha</label>
+        <label for="for">Senha:</label>
             <input type="password" name="senha" class="form-control">
-        <input type="submit" class="btn btn-outline-secondary mt-3" value="Login">
+        <input type="submit" class="btn btn-secondary mt-3" value="Cadastrar">
+        <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" />
     </form>
 </div>
 {% endblock %}
