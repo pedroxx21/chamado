@@ -15,7 +15,7 @@ bcrypt = Bcrypt(app)
 app.config['MYSQL_HOST'] = 'db-mysql-nyc3-13529-do-user-15782594-0.c.db.ondigitalocean.com'
 app.config['MYSQL_USER'] = 'doadmin'
 app.config['MYSQL_PASSWORD'] = 'AVNS_be6DYBLeXon1FMWpWWZ'
-app.config['MYSQL_DB'] = 'db_professor'
+app.config['MYSQL_DB'] = 'db_pedro'
 app.config['MYSQL_PORT'] = 25060
 
 mysql = MySQL(app)
