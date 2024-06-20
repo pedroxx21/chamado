@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session,redirect, jsonify,url_for
+from flask import Flask, render_template, request, session,redirect, jsonify,url_for, flash
 from flask_wtf import CSRFProtect 
 from flask_mysqldb import MySQL
 from flask_bcrypt import Bcrypt
@@ -21,6 +21,9 @@ app.config['MYSQL_PORT'] = 25060
 mysql = MySQL(app)
 
 #app.secret_key = 'ola brasil amado'
+
+
+    
 
 
 
@@ -63,10 +66,22 @@ def consumidorInsert():
         senha = request.form['senha']
         dataAtual = date.today()
 
+        countEmail = verificarEmail(email)
+        if countEmail > 0:
+            flash('esse email ja está cadastrado na plataforma.')
+            return redirect(url_for('formulario'))
+
+        countTelefone = verificarCelular(celular)
+        if countTelefone > 0:
+            flash('esse telefone ja está cadastrado na plataforma.')
+            return redirect(url_for('formulario'))
+        
+
+
         hashPassword = bcrypt.generate_password_hash(senha).decode('utf-8')
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO tb_consumidor (nomeDoConsumidor, email, celular, senha, created_at) VALUES (%s, %s, %s, %s, %s)", (nomeDoConsumidor, email, int(celular), hashPassword, dataAtual))
+        cur.execute("INSERT INTO tb_Consumidor (nome, email, celular, senha, created_at) VALUES (%s, %s, %s, %s, %s)", (nomeDoConsumidor, email, int(celular), hashPassword, dataAtual))
         mysql.connection.commit()
 
         return render_template('login.html', is_home=True,mensagem = "Consumidor inserido com sucesso")
@@ -88,6 +103,12 @@ def loginConsumidor():
         cur.close
 
         return jsonify({'error': usuario}), 200
+    
+        if usuario is None:
+            flash('Usuário ou senha incorreta')
+            return redirect(url_for('login'))
+        else:
+            stored_password_hash = usuario[4]
 
         stored_password_hash = usuario[4]
 
@@ -112,6 +133,22 @@ def listaConsumidor():
     cur.close()
 
     return render_template('index.html', consumidor = data)
+
+def verificarEmail(email):
+    cur = mysql.connection.cursor()
+    cur.execute('Select COUNT(*) from tb_Consumidor WHERE email= %s',(email, ))
+    count = cur.fetchone()[0]
+    cur.close()
+    return count
+
+def verificarCelular(celular):
+    cur = mysql.connection.cursor()
+    cur.execute('Select COUNT(*) from tb_Consumidor WHERE celular= %s',(celular, ))
+    count = cur.fetchone()[0]
+    cur.close()
+    return count
+
+
 
 
 if __name__ == '__main__':

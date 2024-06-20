@@ -5,6 +5,18 @@
     <h1>Cadastro de novo usuário</h1>
     <p>Para acessar o sistema preencha os campos abaixo</p>
 
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-primary" role="alert">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}        
+
     <form method="post" action="{{ url_for('consumidorInsert')}}">
         <label for="for">Nome:</label>
             <input type="text" name="nomeDoConsumidor" class="form-control">
