@@ -40,7 +40,17 @@ def login():
 '''
 @app.route("/dashboard")
 def dashboard():
-    return render_template('dashboard.html',is_home=False)
+    totalChamado = totalChamados()
+    totalChamadosAberto = totalChamadosAbertos()
+    totalChamadosFechado = totalChamadosFechados()
+    chamado = chamados()
+
+    return render_template('dashboard.html',
+                            is_home=False,
+                            totalChamado=totalChamado,
+                            totalChamadosAberto=totalChamadosAberto,
+                            totalChamadosFechado=totalChamadosFechado,
+                            chamados=chamado)
 
 
 
@@ -98,11 +108,11 @@ def loginConsumidor():
         senha = request.form['password']
 
         cur = mysql.connection.cursor()
-        cur.execute("Select * from tb_consumidor WHERE email= %s",(email, ))
+        cur.execute("Select * from tb_Consumidor WHERE email= %s",(email, ))
         usuario = cur.fetchone()
         cur.close
 
-        return jsonify({'error': usuario}), 200
+        #return jsonify({'error': usuario}), 200
     
         if usuario is None:
             flash('Usuário ou senha incorreta')
@@ -148,6 +158,33 @@ def verificarCelular(celular):
     cur.close()
     return count
 
+def totalChamados():
+    cur = mysql.connection.cursor()
+    cur.execute("Select COUNT(*) from tb_chamado")
+    count = cur.fetchone()[0]
+    cur.close()
+    return count
+
+def totalChamadosAbertos():
+    cur = mysql.connection.cursor()
+    cur.execute("Select COUNT(*) from tb_chamado where status <> 'Fechado' ")
+    count = cur.fetchone()[0]
+    cur.close()
+    return count
+
+def totalChamadosFechados():
+    cur = mysql.connection.cursor()
+    cur.execute("Select COUNT(*) from tb_chamado where status = 'Fechado' ")
+    count = cur.fetchone()[0]
+    cur.close()
+    return count
+
+def chamados():
+    cur = mysql.connection.cursor()
+    cur.execute("Select * from tb_chamado where id_consumidor = '5' ")
+    result = cur.fetchall()
+    cur.close()
+    return result
 
 
 

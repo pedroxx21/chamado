@@ -1,0 +1,168 @@
+{% extends 'app.html' %}
+
+{% block conteudo %}
+<! -- {{ session['user'] }} -->
+
+    <div class="container">
+        <div class="page-inner">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                <div>
+                    <h3 class="fw-bold mb-3">Dashboard</h3>
+                    <h6 class="op-7 mb-2">Painel de atendimento ao cliente</h6>
+                </div>
+                <div class="ms-md-auto py-2 py-md-0">
+                    <a href="#" class="btn btn-primary btn-round">Novo Chamado</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category">Total de chamados</p>
+                                        <h4 class="card-title">{{ totalChamado }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-info bubble-shadow-small">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category">Chamados em aberto</p>
+                                        <h4 class="card-title">{{ totalChamadosAberto}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-success bubble-shadow-small">
+                                        <i class="fas fa-luggage-cart"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category">Chamados fechados</p>
+                                        <h4 class="card-title">
+                                            {% if totalChamadosFechado %}
+                                                {{ totalChamadosFechado }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                        <i class="far fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category">Valor do plano</p>
+                                        <h4 class="card-title">R$ 59,90</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="card card-round">
+                        <div class="card-header">
+                            <div class="card-head-row card-tools-still-right">
+                                <h4 class="card-title">Lista de chamados</h4>
+                                <div class="card-tools">
+                                    <button class="btn btn-icon btn-link btn-primary btn-xs">
+                                        <span class="fa fa-angle-down"></span>
+                                    </button>
+                                    <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card">
+                                        <span class="fa fa-sync-alt"></span>
+                                    </button>
+                                    <button class="btn btn-icon btn-link btn-primary btn-xs">
+                                        <span class="fa fa-times"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="card-category">
+                                Segue os chamados e integrações da sua assinatura
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive table-hover table-sales">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Prioridade</th>
+                                                    <th>Status</th>
+                                                    <th>Departamento</th>
+                                                    <th>Assunto</th>
+                                                    <th>Descrição</th>
+                                                    <th>Data</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for chamado in chamados %}
+                                                    <tr>
+                                                        <td>{{ chamado[0] }}</td>
+                                                        <td>{{ chamado[1] }}</td>
+                                                        <td><span class="badge text-bg-success">{{ chamado[2] }}</span></td>
+                                                        <td>{{ chamado[3] }}</td>
+                                                        <td>{{ chamado[4] }}</td>
+                                                        <td>{{ chamado[5] }}</td>
+                                                        <td>{{ chamado[6] }}</td>
+                                                    </tr>
+                                                {% else %}
+                                                    <li>Não há chamados disponíveis.</li>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

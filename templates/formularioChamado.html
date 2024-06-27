@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class=" p-5 bg-light border ">
+    <h1>Forumulário de abertura de chamado</h1>
+    <p>Esse formulário é um canal de atendimento do cliente netlix</p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-primary" role="alert">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %} 
+
+
+    <form method="post" action="{{ url_for('chamadoInsert')}}">
+        <label for="for">Tipo de chamado</label>
+
+        <select name="TipoChamado" class="form-control">
+            <option>Assinatura</option>
+            <option>Financeiro</option>
+            <option>Suporte Técnico</option>
+            <option>Dúvidas</option>
+        </select>
+
+        <label for="for">Título do chamado</label>
+        <input type="text" name="tituloChamado" class="form-control">
+
+        <label for="for">Descrição</label>
+        <textarea name="descricao" class="form-control" rows="4" cols="50"></textarea>
+        <input type="hidden" name="idConsumidor" value="{{ idConsumidor }}" class="form-control">
+
+        <input type="submit" class="btn btn-secondary mt-3" value="Cadastrar">
+    </form>
+
+</div>
+{% endblock %}
